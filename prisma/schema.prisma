@@ -1,0 +1,92 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../apps/api/src/generated/prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Service {
+  id                     String     @id @default(uuid())
+  name                   String
+  slug                   String     @unique
+  defaultDurationMinutes Int
+  minDurationMinutes     Int
+  maxDurationMinutes     Int
+  slotIntervalMinutes    Int
+  active                 Boolean    @default(true)
+  resources              Resource[]
+  bookings               Booking[]
+  createdAt              DateTime   @default(now())
+  updatedAt              DateTime   @updatedAt
+}
+
+model Resource {
+  id            String                 @id @default(uuid())
+  serviceId     String
+  name          String
+  capacity      Int?
+  location      String?
+  active        Boolean                @default(true)
+  service       Service                @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  businessHours ResourceBusinessHour[]
+  bookings      Booking[]
+  createdAt     DateTime               @default(now())
+  updatedAt     DateTime               @updatedAt
+
+  @@index([serviceId])
+}
+
+model ResourceBusinessHour {
+  id         String   @id @default(uuid())
+  resourceId String
+  dayOfWeek  Int
+  openTime   String
+  closeTime  String
+  isActive   Boolean  @default(true)
+  resource   Resource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+
+  @@index([resourceId, dayOfWeek])
+}
+
+model Booking {
+  id               String   @id @default(uuid())
+  serviceId        String
+  resourceId       String
+  startTime        DateTime
+  endTime          DateTime
+  status           String   @default("confirmed")
+  customerName     String?
+  customerEmail    String?
+  bookingReference String   @unique
+  conversationId   String?
+  service          Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  resource         Resource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([resourceId, startTime, endTime])
+  @@index([serviceId, startTime])
+}
+
+model Conversation {
+  id                       String    @id @default(uuid())
+  sessionId                String    @unique
+  channel                  String
+  state                    String
+  serviceSlug              String?
+  requestedDateText        String?
+  requestedTimeText        String?
+  requestedDurationMinutes Int?
+  normalizedWindowStart    DateTime?
+  normalizedWindowEnd      DateTime?
+  selectedResourceId       String?
+  selectedSlotStart        DateTime?
+  selectedSlotEnd          DateTime?
+  lastUserMessage          String?
+  lastAgentMessage         String?
+  contextJson              Json?
+  createdAt                DateTime  @default(now())
+  updatedAt                DateTime  @updatedAt
+}
