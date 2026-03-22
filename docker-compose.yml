@@ -13,6 +13,17 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+  piper:
+    build:
+      context: ./tools/piper
+    container_name: voice-booking-piper
+    restart: unless-stopped
+    ports:
+      - "5001:5000"
+    environment:
+      PIPER_MODEL: /voices/en_US-libritts_r-medium.onnx
+      PIPER_CONFIG: /voices/en_US-libritts_r-medium.onnx.json
+      PIPER_LENGTH_SCALE: "1.15"
 
 volumes:
   postgres_data:
