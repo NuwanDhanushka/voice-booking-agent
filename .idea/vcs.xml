@@ -2,10 +2,5 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/apps/api" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/tools/piper/piper1-gpl" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/tools/piper/piper1-gpl/_skbuild/macosx-14.0-arm64-3.12/cmake-build/espeak_ng/src/espeak_ng_external" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/tools/piper/piper1-gpl/_skbuild/macosx-14.0-arm64-3.12/cmake-build/espeak_ng/src/espeak_ng_external-build/_deps/sonic-git-src" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/tools/whisper_cpp" vcs="Git" />
   </component>
 </project>

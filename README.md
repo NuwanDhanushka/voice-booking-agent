@@ -1,4 +1,4 @@
-# Voice Booking Agent
+# AI Voice Booking Agent
 
 A web MVP for a real availability voice booking system.
 
